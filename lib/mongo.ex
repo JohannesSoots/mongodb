@@ -158,6 +158,7 @@ defmodule Mongo do
     * `:collation` - Optionally specifies a collation to use in MongoDB 3.4 and
     * `:max_time` - Specifies a time limit in milliseconds
     * `:use_cursor` - Use a cursor for a batched response (Default: true)
+    * `:hint` - Use hint for selecting which index should $match use
   """
   @spec aggregate(GenServer.server(), collection, [BSON.document()], Keyword.t()) :: cursor
   def aggregate(topology_pid, coll, pipeline, opts \\ []) do
@@ -167,7 +168,8 @@ defmodule Mongo do
         pipeline: pipeline,
         allowDiskUse: opts[:allow_disk_use],
         collation: opts[:collation],
-        maxTimeMS: opts[:max_time]
+        maxTimeMS: opts[:max_time],
+        hint: opts[:hint]
       )
 
     wv_query = %Query{action: :wire_version}
